@@ -17,7 +17,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 263 85% 60%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -26,7 +26,7 @@ All colors MUST be HSL.
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 263 85% 70%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,7 +34,24 @@ All colors MUST be HSL.
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 263 85% 60%;
+
+    /* Web3 & Chat themed colors */
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+    --warning: 48 96% 53%;
+    --warning-foreground: 222.2 47.4% 11.2%;
+    
+    /* Gradients for modern Web3 UI */
+    --gradient-primary: linear-gradient(135deg, hsl(263 85% 60%), hsl(263 85% 70%));
+    --gradient-secondary: linear-gradient(135deg, hsl(210 40% 96.1%), hsl(263 85% 95%));
+    --gradient-accent: linear-gradient(45deg, hsl(263 85% 60%), hsl(280 85% 65%));
+    
+    /* Chat specific colors */
+    --chat-bubble-user: 263 85% 60%;
+    --chat-bubble-other: 210 40% 96.1%;
+    --chat-online: 142 71% 45%;
+    --chat-offline: 215.4 16.3% 46.9%;
 
     --radius: 0.5rem;
 
