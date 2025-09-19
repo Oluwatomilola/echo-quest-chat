@@ -21,7 +21,9 @@ interface Message {
   content: string;
   created_at: string;
   user_id: string;
-  profiles: Profile;
+  room_id: string;
+  username?: string;
+  display_name?: string;
 }
 
 interface ChatRoom {
@@ -66,6 +68,7 @@ const Chat = () => {
     if (user) {
       fetchProfile();
       fetchRooms();
+      createDefaultRoom();
     }
   }, [user]);
 
@@ -79,6 +82,27 @@ const Chat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const createDefaultRoom = async () => {
+    if (!user) return;
+    
+    // Check if general room exists
+    const { data: existingRooms } = await supabase
+      .from('chat_rooms')
+      .select('*')
+      .eq('name', 'general');
+
+    if (!existingRooms || existingRooms.length === 0) {
+      // Create default room
+      await supabase
+        .from('chat_rooms')
+        .insert({
+          name: 'general',
+          description: 'General discussion for all users',
+          created_by: user.id,
+        });
+    }
+  };
 
   const fetchProfile = async () => {
     if (!user) return;
@@ -128,20 +152,9 @@ const Chat = () => {
   const fetchMessages = async () => {
     if (!selectedRoom) return;
 
-    const { data, error } = await supabase
+    const { data: messagesData, error } = await supabase
       .from('messages')
-      .select(`
-        id,
-        content,
-        created_at,
-        user_id,
-        room_id,
-        profiles!messages_user_id_fkey (
-          id,
-          username,
-          display_name
-        )
-      `)
+      .select('*')
       .eq('room_id', selectedRoom)
       .order('created_at', { ascending: true });
 
@@ -151,9 +164,24 @@ const Chat = () => {
         description: "Failed to fetch messages",
         variant: "destructive",
       });
-    } else {
-      setMessages(data || []);
+      return;
     }
+
+    // Fetch profiles for all unique user IDs
+    const userIds = [...new Set(messagesData?.map(m => m.user_id) || [])];
+    const { data: profilesData } = await supabase
+      .from('profiles')
+      .select('user_id, username, display_name')
+      .in('user_id', userIds);
+
+    // Map messages with profile data
+    const messagesWithProfiles = messagesData?.map(message => ({
+      ...message,
+      username: profilesData?.find(p => p.user_id === message.user_id)?.username,
+      display_name: profilesData?.find(p => p.user_id === message.user_id)?.display_name,
+    })) || [];
+
+    setMessages(messagesWithProfiles);
   };
 
   const subscribeToMessages = () => {
@@ -170,25 +198,26 @@ const Chat = () => {
           filter: `room_id=eq.${selectedRoom}`
         },
         async (payload) => {
-          const { data } = await supabase
+          const { data: messageData } = await supabase
             .from('messages')
-            .select(`
-              id,
-              content,
-              created_at,
-              user_id,
-              room_id,
-              profiles!messages_user_id_fkey (
-                id,
-                username,
-                display_name
-              )
-            `)
+            .select('*')
             .eq('id', payload.new.id)
             .single();
 
-          if (data) {
-            setMessages(prev => [...prev, data]);
+          if (messageData) {
+            const { data: profileData } = await supabase
+              .from('profiles')
+              .select('username, display_name')
+              .eq('user_id', messageData.user_id)
+              .single();
+
+            const newMessage = {
+              ...messageData,
+              username: profileData?.username,
+              display_name: profileData?.display_name,
+            };
+
+            setMessages(prev => [...prev, newMessage]);
           }
         }
       )
@@ -313,7 +342,7 @@ const Chat = () => {
                     {message.user_id !== user?.id && (
                       <Avatar className="h-8 w-8">
                         <AvatarFallback className="bg-gradient-to-r from-primary to-accent text-primary-foreground">
-                          {message.profiles?.username?.slice(0, 2).toUpperCase()}
+                          {(message.username || 'A').slice(0, 2).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                     )}
@@ -322,7 +351,7 @@ const Chat = () => {
                     }`}>
                       {message.user_id !== user?.id && (
                         <div className="text-xs text-muted-foreground mb-1">
-                          {message.profiles?.display_name || message.profiles?.username}
+                          {message.display_name || message.username || 'Anonymous'}
                         </div>
                       )}
                       <div className={`rounded-lg px-3 py-2 ${
