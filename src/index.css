@@ -8,32 +8,32 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 217.2 32.6% 17.5%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
     --primary: 263 85% 60%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
     --accent: 263 85% 70%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
     --ring: 263 85% 60%;
 
     /* Web3 & Chat themed colors */
@@ -42,14 +42,16 @@ All colors MUST be HSL.
     --warning: 48 96% 53%;
     --warning-foreground: 222.2 47.4% 11.2%;
     
-    /* Gradients for modern Web3 UI */
-    --gradient-primary: linear-gradient(135deg, hsl(263 85% 60%), hsl(263 85% 70%));
-    --gradient-secondary: linear-gradient(135deg, hsl(210 40% 96.1%), hsl(263 85% 95%));
-    --gradient-accent: linear-gradient(45deg, hsl(263 85% 60%), hsl(280 85% 65%));
+    /* Dark mode gradients for modern Web3 UI */
+    --gradient-primary: linear-gradient(135deg, hsl(263 85% 60%), hsl(280 85% 65%));
+    --gradient-secondary: linear-gradient(135deg, hsl(217.2 32.6% 17.5%), hsl(263 85% 20%));
+    --gradient-accent: linear-gradient(45deg, hsl(263 85% 60%), hsl(280 85% 70%));
+    --gradient-bg: linear-gradient(135deg, hsl(222.2 84% 4.9%), hsl(217.2 32.6% 10%));
+    --gradient-card: linear-gradient(135deg, hsl(217.2 32.6% 17.5%), hsl(263 85% 15%));
     
     /* Chat specific colors */
     --chat-bubble-user: 263 85% 60%;
-    --chat-bubble-other: 210 40% 96.1%;
+    --chat-bubble-other: 217.2 32.6% 17.5%;
     --chat-online: 142 71% 45%;
     --chat-offline: 215.4 16.3% 46.9%;
 
