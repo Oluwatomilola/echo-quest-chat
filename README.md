@@ -1,8 +1,7 @@
+## Echoquestchat: A Decentralized Chat for the Future.
+Every user has true ownership and privacy with this Web3-powered chat platform.
 
 
-
-
-## What technologies are used for this project?
 
 This project is built with:
 
